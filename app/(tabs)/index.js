@@ -41,17 +41,21 @@ const AfficheItem = ({ item }) => {
 };
 
 // Fonction pour aller chercher les items
-const rafraichirItems = async (setItems) => {
+const rafraichirItems = (setItems) => {
   try {
-    const result = await getDocs(collection(db, "Items"));
-    const nouvellesItems = result.docs.map(doc => ({
-      id: doc.id,
-      nom: doc.data().nom,
-      description: doc.data().description,
-      prix: doc.data().prix,
-      image: doc.data().image,
-    }));
-    setItems(nouvellesItems);
+    getDocs(collection(db, "Items"))
+      .then(result =>
+        result.docs.map(doc => ({
+          id: doc.id,
+          nom: doc.data().nom,
+          description: doc.data().description,
+          prix: doc.data().prix,
+          image: doc.data().image,
+        }))
+      )
+      .then((nouvellesItems) => {
+        setItems(nouvellesItems); // Met à jour les items avec les nouvelles données
+      });
   } catch (e) {
     console.log("Erreur", e);
     Alert.alert("Erreur", "Impossible de récupérer les items.");
