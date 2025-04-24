@@ -3,10 +3,12 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, Image, Alert, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, doc, getDocs, addDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import firebaseConfig from '../../firebaseConfig';
 import Header from '../../Header';
+import { useUser } from '../contexte';
+import { usePanier } from '../panierContext';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -15,6 +17,7 @@ const db = getFirestore(app);
 // Composant d’affichage d’un item
 const AfficheItem = ({ item }) => {	
   const router = useRouter();
+  const { ajouterAuPanier } = usePanier(); 
 
   const allerADetail = () => {
     router.push({
@@ -28,6 +31,8 @@ const AfficheItem = ({ item }) => {
     });
   };
 
+  
+
   return (
     <TouchableOpacity onPress={allerADetail}>
       <View style={styles.itemContainer}>
@@ -35,6 +40,9 @@ const AfficheItem = ({ item }) => {
         <Text style={styles.itemName}>{item.nom}</Text>
         <Text style={styles.itemDescription}>{item.description}</Text>
         <Text style={styles.itemPrice}>${item.prix}</Text>
+        <TouchableOpacity onPress={() => ajouterAuPanier(item)} style={{backgroundColor: 'blue'}}>
+          <Text style={styles.addButtonText}>Ajouter au panier</Text>
+        </TouchableOpacity>
       </View>
     </TouchableOpacity>
   );

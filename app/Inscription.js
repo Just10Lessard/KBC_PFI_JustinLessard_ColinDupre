@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { getFirestore, collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
-import firebaseConfig from '../../firebaseConfig';
+import firebaseConfig from '../firebaseConfig';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
