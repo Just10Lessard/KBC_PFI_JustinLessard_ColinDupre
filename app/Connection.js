@@ -22,8 +22,10 @@ export default function Connection() {
       const compteSnapshot = await getDocs(q); //doit mettre async sinon ca crash. execute la requete
 
       if (!compteSnapshot.empty) { //https://stackoverflow.com/questions/69051871/flutter-firebase-check-if-collection-is-empty
-        const user = compteSnapshot.docs[0].data();
+        const doc = compteSnapshot.docs[0];
+        const user = {...doc.data(), id: doc.id };
         setUser(user);
+        //console.log(user);
         viderPanier();
 
         if (user.admin) {
