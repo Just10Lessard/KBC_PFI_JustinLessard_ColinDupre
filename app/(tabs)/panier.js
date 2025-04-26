@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Button, Image, StyleSheet } from 'react-native';
+import { View, Text, FlatList, Pressable, Image, StyleSheet, Alert } from 'react-native';
 import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import firebaseConfig from '../../firebaseConfig';
@@ -11,29 +11,12 @@ import { useUser } from '../contexte';
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const enregistrerTransaction = async (userId, panier) => {
-  try {
-    const total = panier.reduce((sum, item) => sum + item.prix * item.quantite, 0);
-
-    const transaction = {
-      userId: userId,
-      items: panier,
-      total: total,
-      timestamp: serverTimestamp(), // Add the timestamp here
-    };
-
-    await addDoc(collection(db, "Transactions"), transaction);
-    console.log("Transaction enregistrée avec succès !");
-  } catch (error) {
-    console.error("Erreur lors de l'enregistrement de la transaction :", error);
-  }
-};
-
 
 export default function Panier() {
   const { panier, retirerDuPanier, viderPanier } = usePanier();
   const { user } = useUser();
   const [total, setTotal] = useState(0);
+  const router = useRouter();
   
 
   useEffect(() => {
@@ -44,27 +27,40 @@ export default function Panier() {
     setTotal(newTotal);
   }, [panier]);
 
-  const formaterDate = (timestamp) => {
-    const date = new Date(timestamp); 
-    const jour = date.getDate(); 
-    const mois = date.getMonth() + 1; // Récupère le mois (0-indexé, donc +1)
-    const annee = date.getFullYear(); 
-    return `${jour}/${mois}/${annee}`; 
+
+  const enregistrerTransaction = async (userId, panier, total) => {
+    try {
+      
+      const transaction = {
+        userId: userId,
+        items: panier,
+        total: total,
+        timestamp: serverTimestamp(),
+      };
+      if(panier.length !== 0) {
+        await addDoc(collection(db, "Transactions"), transaction);
+        console.log("Transaction enregistrée avec succès !");
+      }
+      
+    } catch (error) {
+      console.error("Erreur lors de l'enregistrement de la transaction :", error);
+    }
   };
 
   const handleTransaction = () => {
     if (user) {
-      console.log(user);
       enregistrerTransaction(user.id, panier, total); // Pass the total to the function
       viderPanier(); // Clear the cart after the transaction
-      //router.push('/'); // Redirect to the home page or another screen
+      Alert.alert("Succès", "Achat confirmé !");
     } else {
       console.error("Erreur : Aucun utilisateur connecté.");
     }
   };
 
+  
+
   return (
-    <View style={styles.container}>
+    <View style={styles.container}>     
       <Text style={styles.title}>Mon Panier</Text>
       <FlatList
         data={panier}
@@ -75,16 +71,25 @@ export default function Panier() {
             <View style={styles.itemDetails}>
               <Text style={styles.itemName}>{item.nom}</Text>
               <Text style={styles.itemQuantity}>Quantité : {item.quantite}</Text>
-              <Button title="Retirer" onPress={() => retirerDuPanier(item.id)} />
+              <Pressable onPress={() => retirerDuPanier(item.id)} style={styles.pressableButton}>
+                <Text style={styles.pressableButtonText}>Retirer</Text>
+              </Pressable>
             </View>
           </View>
         )}
       />
       <View style={styles.totalContainer}>
         <Text style={styles.totalText}>Total : ${total.toFixed(2)}</Text>
-        <Button title="Confirmer l'achat" onPress={handleTransaction} />
+        <Pressable onPress={handleTransaction} style={styles.pressableButton}>
+          <Text style={styles.pressableButtonText}>Confirmer l'achat</Text>
+        </Pressable>
       </View>
-      <Button title="Vider le panier" onPress={viderPanier} />
+      <Pressable onPress={viderPanier} style={styles.pressableButton}>
+        <Text style={styles.pressableButtonText}>Vider le panier</Text>
+      </Pressable>
+      <Pressable onPress={() => router.push('/historique')} style={styles.pressableButton}>
+        <Text style={styles.pressableButtonText}>Historique</Text>
+      </Pressable>
     </View>
   );
 }
@@ -125,5 +130,29 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#555',
     marginBottom: 8,
+  },
+  totalContainer: {
+    marginTop: 16,
+    padding: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+    alignItems: 'center',
+  },
+  totalText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  pressableButton: {
+    backgroundColor: '#007BFF',
+    padding: 10,
+    borderRadius: 4,
+    alignItems: 'center',
+    marginVertical: 8,
+  },
+  pressableButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
