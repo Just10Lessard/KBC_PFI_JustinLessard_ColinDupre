@@ -17,6 +17,7 @@ const db = getFirestore(app);
 // Composant d’affichage d’un item
 const AfficheItem = ({ item }) => {	
   const router = useRouter();
+  const { user } = useUser(); 
   const { ajouterAuPanier } = usePanier(); 
 
   const allerADetail = () => {
@@ -40,7 +41,12 @@ const AfficheItem = ({ item }) => {
         <Text style={styles.itemName}>{item.nom}</Text>
         <Text style={styles.itemDescription}>{item.description}</Text>
         <Text style={styles.itemPrice}>${item.prix}</Text>
-        <TouchableOpacity onPress={() => ajouterAuPanier(item)} style={{backgroundColor: 'blue'}}>
+        <TouchableOpacity onPress={() => ajouterAuPanier(item)}
+         style={[
+          styles.addToCartButton,
+          !user || user.admin ? styles.disabledButton : null,
+          ]}
+          disabled={!user || user.admin}>
           <Text style={styles.addButtonText}>Ajouter au panier</Text>
         </TouchableOpacity>
       </View>
@@ -152,6 +158,21 @@ const styles = StyleSheet.create({
     fontSize: 15, // Taille légèrement augmentée
     fontWeight: 'bold',
     color: '#007BFF', // Couleur bleue pour mettre en avant le prix
+    textAlign: 'center',
+  },
+  disabledButton: {
+    backgroundColor: 'lightgray',
+  },
+  addToCartButton: {
+    backgroundColor: '#007BFF',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  addButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
     textAlign: 'center',
   },
 });

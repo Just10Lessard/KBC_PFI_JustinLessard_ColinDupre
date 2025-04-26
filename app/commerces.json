@@ -1,8 +1,8 @@
  [
-    {"id": 10, "coord": {"latitude": 45.62615832086224, "longitude": -73.85176243781369}, "nom": "IGA Faubourg, Boisbriand", "image": "https://live.staticflickr.com/2453/4030049506_e497109c0c_z.jpg"},
-    {"id": 20, "coord": {"latitude": 45.626715669869235, "longitude": -73.82536087205551}, "nom": "IGA Boulevard des Entreprises, Boisbriand", "image": "https://vergo.com/wp-content/uploads/2019/11/Vergo-IGA-Daigle-Ste-Therese-1.jpg"},
-    {"id": 30, "coord": {"latitude": 45.643195597465, "longitude": -73.81663639985946}, "nom": "IGA rue Blainville, St-Thérèse", "image": "https://vergo.com/wp-content/uploads/2019/11/Vergo-IGA-Daigle-Ste-Therese-2.jpg"},
-    {"id": 40, "coord": {"latitude": 45.64625549934023, "longitude": -73.86027608000485}, "nom": "IGA rue Saint-Charles, St-Thérèse", "image": "https://igadeziel.com/wp-content/uploads/2021/08/iga-deziel_-0307.jpg"},
-    {"id": 50, "coord": {"latitude": 45.64241870868377, "longitude": -73.84303075333384}, "nom": "Collège Lionel-Groulx", "image": "https://www.clg.qc.ca/wp-content/uploads/2020/01/CLG-Logo.png"}
+    {"id": 10, "coord": {"latitude": 45.62615832086224, "longitude": -73.85176243781369}, "nom": "IGA Faubourg, Boisbriand"},
+    {"id": 20, "coord": {"latitude": 45.626715669869235, "longitude": -73.82536087205551}, "nom": "IGA Boulevard des Entreprises, Boisbriand"},
+    {"id": 30, "coord": {"latitude": 45.643195597465, "longitude": -73.81663639985946}, "nom": "IGA rue Blainville, St-Thérèse"},
+    {"id": 40, "coord": {"latitude": 45.64625549934023, "longitude": -73.86027608000485}, "nom": "IGA rue Saint-Charles, St-Thérèse"},
+    {"id": 50, "coord": {"latitude": 45.64241870868377, "longitude": -73.84303075333384}, "nom": "Collège Lionel-Groulx"}
 ]
   

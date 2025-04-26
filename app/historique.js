@@ -3,41 +3,39 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 import { initializeApp } from "firebase/app";
 import firebaseConfig from '../firebaseConfig';
-import { useUser } from './contexte'; // Import the user context
+import { useUser } from './contexte'; 
+//Colin Dupre
+
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export default function Historique() {
-  const { user } = useUser(); // Get the connected user
-  const [transactions, setTransactions] = useState([]); // State to store transactions
+  const { user } = useUser(); 
+  const [transactions, setTransactions] = useState([]); 
+
+  const fetchTransactions = async () => {
+    
+    try {
+      const transactionsRef = collection(db, 'Transactions'); 
+      const q = query(transactionsRef, where('userId', '==', user.id)); 
+      const querySnapshot = await getDocs(q);
+      
+
+      const fetchedTransactions = querySnapshot.docs.map((doc) => ({
+        id: doc.id, 
+        ...doc.data(),
+      }));
+
+      setTransactions(fetchedTransactions); 
+    } catch (error) {
+      console.error('Erreur lors de la récupération des donnees ');
+    }
+  };
 
   useEffect(() => {
-    const fetchTransactions = async () => {
-      if (!user || !user.id) {
-        console.error('Utilisateur non connecté ou ID manquant.');
-        return;
-      }
-
-      try {
-        const transactionsRef = collection(db, 'Transactions'); // Reference to the Transactions collection
-        const q = query(transactionsRef, where('userId', '==', user.id)); // Query transactions for the connected user
-        const querySnapshot = await getDocs(q);
-        
-
-        const fetchedTransactions = querySnapshot.docs.map((doc) => ({
-          id: doc.id, // Include the document ID
-          ...doc.data(), // Spread the document data
-        }));
-
-        setTransactions(fetchedTransactions); // Update the state with the fetched transactions
-      } catch (error) {
-        console.error('Erreur lors de la récupération des transactions :', error);
-      }
-    };
-
     fetchTransactions();
-  }, [user]);
+  }, []);
 
   if (transactions.length === 0) {
     return (

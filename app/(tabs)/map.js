@@ -20,17 +20,13 @@ export default function AppCommerce() {
   };
 
   const commercePress = (commerce) => {
-    if (selectedCommerce?.id === commerce.id) {
-      router.push({ pathname: '/App_Details', params: { nom: commerce.nom } });
-    } else {
-      setSelectedCommerce(commerce);
-      mapRef.current.animateToRegion({
+    setSelectedCommerce(commerce);
+    mapRef.current.animateToRegion({
         latitude: commerce.coord.latitude,
         longitude: commerce.coord.longitude,
         latitudeDelta: 0.05,
         longitudeDelta: 0.05,
-      });
-    }
+        });  
   };
 
   const renderItem = ({ item }) => (
@@ -80,10 +76,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   map: {
-    height: '70%',
+    height: '79%',
   },
   list: {
-    flex: '30%', 
+    flex: '21%', 
     backgroundColor: 'white',
   },
   listItem: {
@@ -95,6 +91,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgrey',
   },
   listItemText: {
-    fontSize: 11,
+    fontSize: 20,
   },
 });

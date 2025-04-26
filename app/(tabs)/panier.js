@@ -6,6 +6,8 @@ import firebaseConfig from '../../firebaseConfig';
 import { useRouter } from 'expo-router';
 import { usePanier } from '../panierContext';
 import { useUser } from '../contexte';
+//Colin Dupre
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -39,6 +41,7 @@ export default function Panier() {
       };
       if(panier.length !== 0) {
         await addDoc(collection(db, "Transactions"), transaction);
+        Alert.alert("Succès", "Achat confirmé !");
         console.log("Transaction enregistrée avec succès !");
       }
       
@@ -51,7 +54,6 @@ export default function Panier() {
     if (user) {
       enregistrerTransaction(user.id, panier, total); // Pass the total to the function
       viderPanier(); // Clear the cart after the transaction
-      Alert.alert("Succès", "Achat confirmé !");
     } else {
       console.error("Erreur : Aucun utilisateur connecté.");
     }
@@ -79,15 +81,27 @@ export default function Panier() {
         )}
       />
       <View style={styles.totalContainer}>
-        <Text style={styles.totalText}>Total : ${total.toFixed(2)}</Text>
-        <Pressable onPress={handleTransaction} style={styles.pressableButton}>
+        <Text style={styles.totalText}>Total : ${total}</Text>
+        <Pressable onPress={handleTransaction} 
+        style={[
+          styles.pressableButton,
+          !user || user.admin ?  styles.disabledButton : null,]}
+         disabled={!user || user.admin}>
           <Text style={styles.pressableButtonText}>Confirmer l'achat</Text>
         </Pressable>
       </View>
-      <Pressable onPress={viderPanier} style={styles.pressableButton}>
+      <Pressable onPress={viderPanier} 
+        style={[
+          styles.pressableButton,
+          !user || user.admin ? styles.disabledButton : null,]}
+        disabled={!user || user.admin}>
         <Text style={styles.pressableButtonText}>Vider le panier</Text>
       </Pressable>
-      <Pressable onPress={() => router.push('/historique')} style={styles.pressableButton}>
+      <Pressable onPress={() => router.push('/historique')} 
+        style={[
+          styles.pressableButton,
+          !user || user.admin ? styles.disabledButton : null,]}
+        disabled={!user || user.admin}>
         <Text style={styles.pressableButtonText}>Historique</Text>
       </Pressable>
     </View>
@@ -154,5 +168,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  disabledButton: {
+    backgroundColor: 'lightgray',
   },
 });
