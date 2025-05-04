@@ -1,14 +1,16 @@
+//Justin Lessard
+
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { getFirestore, collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
-import firebaseConfig from '../firebaseConfig';
+import firebaseConfig from '../../firebaseConfig';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 
-export default function Inscription() {
+export default function AppInscription() {
   const [nomUser, setNomUser] = useState('');
   const [mdp, setMdp] = useState('');
 
@@ -18,7 +20,7 @@ export default function Inscription() {
 
   const creerCompte = async () => {
     if (isNullOrEmpty(nomUser) || isNullOrEmpty(mdp)) {
-        Alert.alert('Erreur', 'Le nom d’utilisateur et le mot de passe ne peuvent pas être vides.');
+        Alert.alert('Erreur', 'Le nom d’utilisateur et/ou le mot de passe ne peuvent pas être vides.');
         return;
     }
 
@@ -35,7 +37,7 @@ export default function Inscription() {
       await addDoc(comptesRef, {
         nomUser,
         mdp,
-        admin: false, // Par défaut, le compte n'est pas administrateur
+        admin: false, // Pas admin par défaut
       });
 
       Alert.alert('Succès', 'Compte créé avec succès!');

@@ -7,9 +7,13 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useUser } from '../contexte';
+import { usePanier } from '../panierContext';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { user } = useUser(); 
+
 
   return (
     <Tabs
@@ -34,6 +38,28 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="Connection"
+        options={{
+          title: 'Connection',
+          href: user ? null: undefined,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="Inscription"
+        options={{
+          title: 'Inscription',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="historique"
+        options={{
+          title: 'Historique',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
         name="panier"
         options={{
           title: 'Panier',
@@ -51,6 +77,14 @@ export default function TabLayout() {
         name="explore"
         options={{
           title: 'À propos',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="details"
+        options={{
+          title: 'details',
+          href: null,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />

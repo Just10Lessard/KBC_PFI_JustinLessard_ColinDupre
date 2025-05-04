@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 import { initializeApp } from "firebase/app";
-import firebaseConfig from '../firebaseConfig';
-import { useUser } from './contexte'; 
+import firebaseConfig from '../../firebaseConfig';
+import { useUser } from '../contexte'; 
 //Colin Dupre
 
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export default function Historique() {
+export default function AppHistorique() {
   const { user } = useUser(); 
   const [transactions, setTransactions] = useState([]); 
 

@@ -1,4 +1,3 @@
-// AppItems.js
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, Image, Alert, TouchableOpacity } from 'react-native';
@@ -6,7 +5,7 @@ import { useRouter } from 'expo-router';
 import { getFirestore, collection, doc, getDocs, addDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import firebaseConfig from '../../firebaseConfig';
-import Header from '../../Header';
+import Header from '../Header';
 import { useUser } from '../contexte';
 import { usePanier } from '../panierContext';
 
@@ -91,7 +90,7 @@ export default function AppItems() {
           data={items}
           renderItem={({ item }) => <AfficheItem item={item} />}
           keyExtractor={item => item.id}
-          numColumns={2} // Ajout de cette ligne pour afficher 2 items par rangée
+          numColumns={2} //2 par ligne
         />
 
       <StatusBar style="auto" />
@@ -104,7 +103,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 40,
-    backgroundColor: '#f5f5f5', // Couleur de fond plus douce
+    backgroundColor: 'beige',
     paddingHorizontal: 10,
   },
   titre: {
@@ -114,32 +113,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333', // Couleur du texte plus neutre
   },
-  message: {
-    textAlign: 'center',
-    color: 'darkred',
-    marginTop: 20,
-  },
   itemContainer: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 8, // Augmentation de la marge pour plus d'espace entre les items
-    padding: 12, // Plus de padding pour un contenu mieux espacé
-    backgroundColor: '#ffffff', // Fond blanc pour contraster avec le fond global
-    borderRadius: 12, // Coins plus arrondis
-    shadowColor: '#000', // Ombre pour un effet de carte
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3, // Ombre pour Android
-    width: '100%', // Ajustement pour mieux espacer les colonnes
+    margin: 6,
+    padding: 12,
+    backgroundColor: 'white',
   },
   itemImage: {
     width: '100%',
     height: 150, // Taille de l'image
-    borderRadius: 10, // Coins arrondis pour l'image
-    marginBottom: 10,
   },
   itemName: {
     fontSize: 16,

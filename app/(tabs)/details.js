@@ -1,7 +1,9 @@
+//Justin Lessard
+
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
-export default function DetailsItem() {
+export default function AppDetailsItem() {
   const { nom, description, prix, image } = useLocalSearchParams();
 
   return (

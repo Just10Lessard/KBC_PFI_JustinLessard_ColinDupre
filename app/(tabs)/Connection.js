@@ -1,39 +1,33 @@
+//Justin Lessard
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
-import firebaseConfig from '../firebaseConfig';
-import { useUser } from './contexte';
-import { usePanier } from './panierContext';
+import firebaseConfig from '../../firebaseConfig';
+import { useUser } from '../contexte';
+import { usePanier } from '../panierContext';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export default function Connection() {
+export default function AppConnection() {
   const [nomUser, setNomUser] = useState('');
   const [mdp, setMdp] = useState('');
+  //Colin Dupre pour la partie setUser et viderPanier
   const { setUser } = useUser();
   const { viderPanier } = usePanier();
 
-  const verifierConnexion = async () => { //https://www.youtube.com/watch?v=-yrnWnN0g9o et https://stackoverflow.com/questions/73266511/how-to-query-in-a-specific-document-in-firebase
+  const verifierConnexion = async () => {
     try {
-      const comptesRef = collection(db, 'Comptes'); //indique que tu fais reference a la collection comptes
-      const q = query(comptesRef, where('nomUser', '==', nomUser), where('mdp', '==', mdp)); //requete pour verifier si nomUser et mdp sont corrects
-      const compteSnapshot = await getDocs(q); //doit mettre async sinon ca crash. execute la requete
-
-      if (!compteSnapshot.empty) { //https://stackoverflow.com/questions/69051871/flutter-firebase-check-if-collection-is-empty
-        const doc = compteSnapshot.docs[0];
-        const user = {...doc.data(), id: doc.id };
-        setUser(user);
-        //console.log(user);
-        viderPanier();
-
-        if (user.admin) {
-          Alert.alert('Connexion réussie', 'Bienvenue, administrateur!');
-
-        } else {
-          Alert.alert('Connexion réussie', 'Bienvenue, utilisateur!');
-        }
+      const comptesRef = collection(db, 'Comptes'); // Référence à la collection Comptes
+      const q = query(comptesRef, where('nomUser', '==', nomUser), where('mdp', '==', mdp)); // Requête pour vérifier les identifiants
+      const compte = await getDocs(q); // Exécute la requête
+  
+      if (!compte.empty) { // Vérifie si un document a été trouvé
+        const user = { ...compte.docs[0].data(), id: compte.docs[0].id }; // Doit mettre [0] pour prendre seulement 1 compte sinon erreur
+        setUser(user); // Met à jour l'utilisateur dans le contexte
+        viderPanier(); // Vide le panier
+        Alert.alert('Connexion réussie');
       } else {
         Alert.alert('Erreur', 'Nom d’utilisateur ou mot de passe incorrect.');
       }
