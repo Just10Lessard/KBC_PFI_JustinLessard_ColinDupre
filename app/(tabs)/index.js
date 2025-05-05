@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, Image, Alert, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { getFirestore, collection, doc, getDocs, addDoc, deleteDoc, updateDoc } from "firebase/firestore";
+import { getFirestore, collection, doc, getDocs, addDoc, deleteDoc, updateDoc, onSnapshot } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import firebaseConfig from '../../firebaseConfig';
 import Header from '../Header';
@@ -64,31 +64,31 @@ const AfficheItem = ({ item }) => {
 };
 // Fonction pour aller chercher les items
 const rafraichirItems = (setItems) => {
-  try {
-    getDocs(collection(db, "Items"))
-      .then(result =>
-        result.docs.map(doc => ({
-          id: doc.id,
-          nom: doc.data().nom,
-          description: doc.data().description,
-          prix: doc.data().prix,
-          image: doc.data().image,
-        }))
-      )
-      .then((nouvellesItems) => {
-        setItems(nouvellesItems); // Met à jour les items avec les nouvelles données
-      });
-  } catch (e) {
-    console.log("Erreur", e);
+  const unsubscribe = onSnapshot(collection(db, "Items"), (snapshot) => {//https://firebase.google.com/docs/firestore/query-data/listen
+    const nouvellesItems = snapshot.docs.map(doc => ({
+      id: doc.id,
+      nom: doc.data().nom,
+      description: doc.data().description,
+      prix: doc.data().prix,
+      image: doc.data().image,
+    }));
+    setItems(nouvellesItems); // Met à jour les items avec les nouvelles données
+  }, (error) => {
+    console.error("Erreur lors de l'écoute des changements :", error);
     Alert.alert("Erreur", "Impossible de récupérer les items.");
-  }
+  });
+
+  return unsubscribe;// Retourne la fonction unsub pour arreter de regarder les changements
 };
+
 
 export default function AppItems() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    rafraichirItems(setItems);
+    const unsubscribe = rafraichirItems(setItems);
+
+    return () => unsubscribe();//vide la memoire une fois composant refresh
   }, []);
 
   return (

@@ -2,7 +2,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useUser } from '../contexte';
+import { useUser } from './contexte';
 
 const Header = (props) => {
   const router = useRouter();

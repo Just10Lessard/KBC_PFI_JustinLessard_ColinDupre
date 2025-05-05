@@ -25,7 +25,7 @@ export default function AppConnection() {
   
       if (!compte.empty) { // Vérifie si un document a été trouvé
         const user = { ...compte.docs[0].data(), id: compte.docs[0].id }; // Doit mettre [0] pour prendre seulement 1 compte sinon erreur
-        setUser(user);e
+        setUser(user);
         viderPanier();
         Alert.alert('Connexion réussie');
       } else {

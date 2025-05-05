@@ -49,6 +49,7 @@ export default function TabLayout() {
         name="Inscription"
         options={{
           title: 'Inscription',
+          href: user ? null : undefined,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
@@ -56,7 +57,7 @@ export default function TabLayout() {
         name="historique"
         options={{
           title: 'Historique',
-          href: user && user.admin ? null : undefined,
+          href: user && !user.admin ? undefined :  null,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
@@ -64,7 +65,7 @@ export default function TabLayout() {
         name="panier"
         options={{
           title: 'Panier',
-          href: user && user.admin ? null : undefined,
+          href: user && !user.admin ? undefined :  null,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
@@ -94,7 +95,7 @@ export default function TabLayout() {
         name="ajoutItem"
         options={{
           title: 'Ajout Item',
-          href: user && !user.admin ? null : undefined,
+          href: user && user.admin ? undefined :  null,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
