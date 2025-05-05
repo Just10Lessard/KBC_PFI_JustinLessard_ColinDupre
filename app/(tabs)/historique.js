@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Alert } from 'react-native';
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 import { initializeApp } from "firebase/app";
 import firebaseConfig from '../../firebaseConfig';
@@ -29,7 +29,7 @@ export default function AppHistorique() {
 
       setTransactions(fetchedTransactions); 
     } catch (error) {
-      console.error('Erreur lors de la récupération des donnees ');
+      Alert.alert('Erreur', 'Il a eu une erreur');
     }
   };
 

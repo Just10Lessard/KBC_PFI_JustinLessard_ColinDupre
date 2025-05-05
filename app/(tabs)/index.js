@@ -1,3 +1,5 @@
+//Justin Lessard
+
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, Image, Alert, TouchableOpacity } from 'react-native';
@@ -13,7 +15,6 @@ import { usePanier } from '../panierContext';
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Composant d’affichage d’un item
 const AfficheItem = ({ item }) => {	
   const router = useRouter();
   const { user } = useUser(); 
@@ -31,7 +32,15 @@ const AfficheItem = ({ item }) => {
     });
   };
 
-  
+  const supprimerItem = async () => {
+    try {
+      await deleteDoc(doc(db, "Items", item.id)); // Supprime l'item de Firestore
+      Alert.alert("Succès", "L'item a été supprimé avec succès.");
+    } catch (error) {
+      console.error("Erreur lors de la suppression :", error);
+      Alert.alert("Erreur", "Impossible de supprimer l'item.");
+    }
+  };
 
   return (
     <TouchableOpacity onPress={allerADetail}>
@@ -40,19 +49,19 @@ const AfficheItem = ({ item }) => {
         <Text style={styles.itemName}>{item.nom}</Text>
         <Text style={styles.itemDescription}>{item.description}</Text>
         <Text style={styles.itemPrice}>${item.prix}</Text>
-        <TouchableOpacity onPress={() => ajouterAuPanier(item)}
-         style={[
-          styles.addToCartButton,
-          !user || user.admin ? styles.disabledButton : null,
-          ]}
-          disabled={!user || user.admin}>
-          <Text style={styles.addButtonText}>Ajouter au panier</Text>
-        </TouchableOpacity>
+        {user && user.admin ? (
+          <TouchableOpacity onPress={supprimerItem} style={styles.deleteButton}>
+            <Text style={styles.deleteButtonText}>Supprimer</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => ajouterAuPanier(item)} style={styles.addToCartButton} disabled={!user}>
+            <Text style={styles.addButtonText}>Ajouter au panier</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </TouchableOpacity>
   );
 };
-
 // Fonction pour aller chercher les items
 const rafraichirItems = (setItems) => {
   try {

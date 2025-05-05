@@ -42,20 +42,19 @@ export default function Panier() {
       if(panier.length !== 0) {
         await addDoc(collection(db, "Transactions"), transaction);
         Alert.alert("Succès", "Achat confirmé !");
-        console.log("Transaction enregistrée avec succès !");
       }
       
     } catch (error) {
-      console.error("Erreur lors de l'enregistrement de la transaction :", error);
+      Alert.alert("Erreur", "Il a eu une erreur");
     }
   };
 
   const handleTransaction = () => {
     if (user) {
-      enregistrerTransaction(user.id, panier, total); // Pass the total to the function
-      viderPanier(); // Clear the cart after the transaction
+      enregistrerTransaction(user.id, panier, total);
+      viderPanier();
     } else {
-      console.error("Erreur : Aucun utilisateur connecté.");
+      console.error("Erreur : Pas d'utilisateur connecté.");
     }
   };
 

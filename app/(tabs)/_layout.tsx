@@ -13,7 +13,7 @@ import { usePanier } from '../panierContext';
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { user } = useUser(); 
-
+//Justin Lessard
 
   return (
     <Tabs
@@ -56,7 +56,7 @@ export default function TabLayout() {
         name="historique"
         options={{
           title: 'Historique',
-          href: user.admin ? null: undefined,
+          href: user && user.admin ? null : undefined,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
@@ -64,7 +64,7 @@ export default function TabLayout() {
         name="panier"
         options={{
           title: 'Panier',
-          href: user.admin ? null: undefined,
+          href: user && user.admin ? null : undefined,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
@@ -87,6 +87,14 @@ export default function TabLayout() {
         options={{
           title: 'details',
           href: null,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="ajoutItem"
+        options={{
+          title: 'Ajout Item',
+          href: user && !user.admin ? null : undefined,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />

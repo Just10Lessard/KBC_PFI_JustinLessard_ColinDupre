@@ -19,21 +19,20 @@ export default function AppConnection() {
 
   const verifierConnexion = async () => {
     try {
-      const comptesRef = collection(db, 'Comptes'); // Référence à la collection Comptes
-      const q = query(comptesRef, where('nomUser', '==', nomUser), where('mdp', '==', mdp)); // Requête pour vérifier les identifiants
-      const compte = await getDocs(q); // Exécute la requête
+      const comptesRef = collection(db, 'Comptes'); // Ramasse la collection Comptes
+      const q = query(comptesRef, where('nomUser', '==', nomUser), where('mdp', '==', mdp)); //https://www.youtube.com/watch?v=-yrnWnN0g9o
+      const compte = await getDocs(q); //Ramasse le user qui le meme nom et mdp
   
       if (!compte.empty) { // Vérifie si un document a été trouvé
         const user = { ...compte.docs[0].data(), id: compte.docs[0].id }; // Doit mettre [0] pour prendre seulement 1 compte sinon erreur
-        setUser(user); // Met à jour l'utilisateur dans le contexte
-        viderPanier(); // Vide le panier
+        setUser(user);e
+        viderPanier();
         Alert.alert('Connexion réussie');
       } else {
-        Alert.alert('Erreur', 'Nom d’utilisateur ou mot de passe incorrect.');
+        Alert.alert('Erreur', 'Mauvais nom ou mot de passe.');
       }
     } catch (error) {
-      console.error('Erreur lors de la connexion :', error);
-      Alert.alert('Erreur', 'Une erreur est survenue.');
+      Alert.alert('Erreur', 'Il a eu une erreur');
     }
   };
 

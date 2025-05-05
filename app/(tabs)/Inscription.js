@@ -20,7 +20,7 @@ export default function AppInscription() {
 
   const creerCompte = async () => {
     if (isNullOrEmpty(nomUser) || isNullOrEmpty(mdp)) {
-        Alert.alert('Erreur', 'Le nom d’utilisateur et/ou le mot de passe ne peuvent pas être vides.');
+        Alert.alert('Erreur', 'Le nom et/ou le mot de passe ne peuvent pas être vides.');
         return;
     }
 
@@ -30,7 +30,7 @@ export default function AppInscription() {
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        Alert.alert('Erreur', 'Ce nom d’utilisateur existe déjà.');
+        Alert.alert('Erreur', 'Ce nom existe déjà');
         return;
       }
 
@@ -40,12 +40,11 @@ export default function AppInscription() {
         admin: false, // Pas admin par défaut
       });
 
-      Alert.alert('Succès', 'Compte créé avec succès!');
+      Alert.alert('Succès', 'Compte créé');
       setNomUser('');
       setMdp('');
     } catch (error) {
-      console.error('Erreur lors de la création du compte :', error);
-      Alert.alert('Erreur', 'Impossible de créer le compte.');
+      Alert.alert('Erreur', 'Il a eu un problème');
     }
   };
 
