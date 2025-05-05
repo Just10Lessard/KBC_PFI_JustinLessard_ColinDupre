@@ -41,7 +41,7 @@ export default function TabLayout() {
         name="Connection"
         options={{
           title: 'Connection',
-          href: user ? null: undefined,
+          href: null,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
@@ -56,6 +56,7 @@ export default function TabLayout() {
         name="historique"
         options={{
           title: 'Historique',
+          href: user.admin ? null: undefined,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
@@ -63,6 +64,7 @@ export default function TabLayout() {
         name="panier"
         options={{
           title: 'Panier',
+          href: user.admin ? null: undefined,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
