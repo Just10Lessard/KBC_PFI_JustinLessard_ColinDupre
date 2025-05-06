@@ -100,6 +100,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgrey',
   },
   listItemText: {
-    fontSize: 20,
+    fontSize: 12,
   },
 });

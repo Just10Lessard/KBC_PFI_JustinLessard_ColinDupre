@@ -13,35 +13,27 @@ const db = getFirestore(app);
 export default function AppHistorique() {
   const { user } = useUser(); 
   const [transactions, setTransactions] = useState([]); 
-  const [refreshing, setRefreshing] = useState(false);
 
-  const fetchTransactions = async () => {
-    
-    try {
-      const transactionsRef = collection(db, 'Transactions'); 
-      const q = query(transactionsRef, where('userId', '==', user.id)); 
-      const querySnapshot = await getDocs(q);
-      
-
+  const fetchTransactions = () => {
+    const transactionsRef = collection(db, 'Transactions'); 
+    const q = query(transactionsRef, where('userId', '==', user.id)); 
+  
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const fetchedTransactions = querySnapshot.docs.map((doc) => ({
-        id: doc.id, 
+        id: doc.id,
         ...doc.data(),
       }));
-
-      setTransactions(fetchedTransactions); 
-    } catch (error) {
-      console.log('Erreur', 'Il a eu une erreur');
-    }
-  };
-
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    await fetchTransactions();
-    setRefreshing(false);
+      setTransactions(fetchedTransactions);
+    }, (error) => {
+      console.log('Erreur', 'Il a eu une erreur', error);
+    });
+  
+    return unsubscribe;
   };
 
   useEffect(() => {
-    fetchTransactions();
+    const unsubscribe = fetchTransactions();
+    return () => unsubscribe(); 
   }, []);
 
   if (transactions.length === 0) {
@@ -61,7 +53,9 @@ export default function AppHistorique() {
         renderItem={({ item }) => (
           <View style={styles.transactionContainer}>
             <Text style={styles.transactionDate}>
-                Date : {new Date(item.timestamp.seconds * 1000).toLocaleDateString()}{/* *1000 pour conversion de seconde a milliseconde firestore et javascript est tata */}
+                Date : {item.timestamp && item.timestamp.seconds
+                  ? new Date(item.timestamp.seconds * 1000).toLocaleDateString()
+                  : "attende de transaction"}{/* *1000 pour conversion de seconde a milliseconde firestore et javascript est tata */}
             </Text>
             <Text style={styles.transactionTotal}>Total : ${item.total}</Text>
             <Text style={styles.transactionItems}>Articles :</Text>
@@ -72,8 +66,6 @@ export default function AppHistorique() {
             ))}
           </View>
         )}
-        refreshing={refreshing}
-        onRefresh={handleRefresh}
       />
     </View>
   );

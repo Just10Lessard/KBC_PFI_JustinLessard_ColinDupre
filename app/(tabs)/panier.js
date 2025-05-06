@@ -85,7 +85,7 @@ export default function Panier() {
         style={[
           styles.pressableButton,
           !user || user.admin ?  styles.disabledButton : null,]}
-         disabled={!user || user.admin}>
+          disabled={!user || user.admin}>
           <Text style={styles.pressableButtonText}>Confirmer l'achat</Text>
         </Pressable>
       </View>
@@ -129,7 +129,6 @@ const styles = StyleSheet.create({
   itemImage: {
     width: 60,
     height: 60,
-    borderRadius: 8,
     marginRight: 16,
   },
   itemDetails: {
@@ -161,7 +160,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 4,
     alignItems: 'center',
-    marginVertical: 8,
+    marginBottom: 8,
   },
   pressableButtonText: {
     color: '#fff',
