@@ -62,7 +62,7 @@ export default function Panier() {
 
   return (
     <View style={styles.container}>     
-      <Text style={styles.title}>Mon Panier</Text>
+      <Text style={styles.title}>Mon Panier - {user.nomUser ? user.nomUser : ""}</Text>
       <FlatList
         data={panier}
         keyExtractor={(item) => item.id}

@@ -84,6 +84,7 @@ const rafraichirItems = (setItems) => {
 
 export default function AppItems() {
   const [items, setItems] = useState([]);
+  
 
   useEffect(() => {
     const unsubscribe = rafraichirItems(setItems);
@@ -127,12 +128,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 6,
+    margin: 10,
     padding: 12,
     backgroundColor: 'white',
   },
   itemImage: {
-    width: '100%',
+    width: 150, // Largeur de l'image,
     height: 150, // Taille de l'image
   },
   itemName: {
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
   itemDescription: {
     fontSize: 13, // Taille légèrement augmentée pour une meilleure lisibilité
     color: '#777', // Couleur plus douce pour le texte secondaire
-    marginBottom: 5,
+    marginBottom: 8,
     textAlign: 'center',
   },
   itemPrice: {
@@ -153,9 +154,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#007BFF', // Couleur bleue pour mettre en avant le prix
     textAlign: 'center',
+    marginBottom: 10,
   },
   disabledButton: {
     backgroundColor: 'lightgray',
+  },
+  deleteButton: {
+    backgroundColor: 'red', // Red for delete
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  deleteButtonText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   addToCartButton: {
     backgroundColor: '#007BFF',

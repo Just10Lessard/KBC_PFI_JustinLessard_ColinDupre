@@ -57,7 +57,8 @@ export default function TabLayout() {
         name="historique"
         options={{
           title: 'Historique',
-          href: user && !user.admin ? undefined :  null,
+          href: null,
+          //href: user && !user.admin ? undefined :  null,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />

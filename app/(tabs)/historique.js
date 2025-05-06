@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, Alert } from 'react-native';
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, query, where, getDocs, onSnapshot } from 'firebase/firestore';
 import { initializeApp } from "firebase/app";
 import firebaseConfig from '../../firebaseConfig';
 import { useUser } from '../contexte'; 
@@ -13,6 +13,7 @@ const db = getFirestore(app);
 export default function AppHistorique() {
   const { user } = useUser(); 
   const [transactions, setTransactions] = useState([]); 
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchTransactions = async () => {
     
@@ -29,8 +30,14 @@ export default function AppHistorique() {
 
       setTransactions(fetchedTransactions); 
     } catch (error) {
-      Alert.alert('Erreur', 'Il a eu une erreur');
+      console.log('Erreur', 'Il a eu une erreur');
     }
+  };
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await fetchTransactions();
+    setRefreshing(false);
   };
 
   useEffect(() => {
@@ -47,7 +54,7 @@ export default function AppHistorique() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Historique des Transactions</Text>
+      <Text style={styles.title}>Transactions - {user.nomUser ? user.nomUser : ""}</Text>
       <FlatList
         data={transactions}
         keyExtractor={(item) => item.id}
@@ -65,6 +72,8 @@ export default function AppHistorique() {
             ))}
           </View>
         )}
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
       />
     </View>
   );
@@ -92,7 +101,6 @@ const styles = StyleSheet.create({
     padding: 16,
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 8,
   },
   transactionDate: {
     fontSize: 16,

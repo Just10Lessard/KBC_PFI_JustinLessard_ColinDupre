@@ -4,12 +4,14 @@ import MapView, { Marker } from 'react-native-maps';
 import { useRouter } from 'expo-router'; 
 import commerces from '../commerces.json'; 
 import homeIcon from '../../assets/home.png';
+import { useUser } from '../contexte';
 //Colin Dupre
 
 
 export default function AppCommerce() {
   const router = useRouter();
   const mapRef = useRef(null);
+  const { user } = useUser();
   const [selectedCommerce, setSelectedCommerce] = useState(null);
 
   const initialRegion = {
@@ -43,6 +45,8 @@ export default function AppCommerce() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}> Carte - {user ? user.nomUser : ""}</Text>
+      
       <MapView
         ref={mapRef}
         style={styles.map}
@@ -74,6 +78,11 @@ export default function AppCommerce() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
   },
   map: {
     height: '79%',

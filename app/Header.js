@@ -22,7 +22,7 @@ const Header = (props) => {
       <View style={styles.userContainer}>
         {user ? (
           <View>
-            <Text style={styles.userText}>Bonjour, {user.nomUser}!</Text>
+            <Text style={styles.userText}>Bonjour, {user.nomUser ? user.nomUser : ""}!</Text>
             <TouchableOpacity onPress={Deconnection} style={styles.button}>
               <Text style={styles.buttonText}>Déconnexion</Text>
             </TouchableOpacity>
